@@ -109,19 +109,12 @@ RCT_EXPORT_METHOD(captureRef:(nonnull NSNumber *)target
     format.scale = 0; // Set scale to 0 for non-retina rendering
 
     UIGraphicsImageRenderer *renderer = [[UIGraphicsImageRenderer alloc] initWithSize:size format:format];
-    UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
-        BOOL success = [rendered drawViewHierarchyInRect:(CGRect){CGPointZero, size} afterScreenUpdates:YES];
-    }];
+    UIImage *image = [renderer imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {}];
 
     if (snapshotContentContainer) {
       // Restore scroll & frame
       scrollView.contentOffset = savedContentOffset;
       scrollView.frame = savedFrame;
-    }
-
-    if (!success) {
-      reject(RCTErrorUnspecified, @"The view cannot be captured. drawViewHierarchyInRect was not successful. This is a potential technical or security limitation.", nil);
-      return;
     }
 
     if (!image) {
